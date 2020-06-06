@@ -1,7 +1,7 @@
 import os
 import datetime
 import urllib.request
-from flask import Flask, flash, request, redirect, render_template, Response, jsonify, send_from_directory, stream_with_context
+from flask import Flask, flash, request, redirect, render_template, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from upload_video import get_authenticated_service, initialize_upload
 
@@ -15,22 +15,11 @@ app.config['MAX_CONTENT_LENGHT'] = 16*1024*1024
 
 ALLOWED_EXTENSIONS = set(['mp4', 'flv'])
 
-
-video_camera = None
-global_frame = None
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
-    try:
-        global video_camera 
-        if video_camera != None:
-            video_camera.__del__()
-            video_camera = None
-    except Exception as ex:
-        print(str(ex))
     return render_template('index.html')
 
 @app.route('/upload_file', methods=['GET', 'POST'])
@@ -87,51 +76,6 @@ def upload_file():
     resp.status_code = 500
     return resp
 
-@app.route('/record_status', methods=['POST'])
-def record_status():
-    global video_camera 
-    if video_camera == None:
-        from camera import VideoCamera
-        video_camera = VideoCamera()
-
-    json = request.get_json()
-
-    status = json['status']
-
-    if status == "true":
-        msg = video_camera.start_record()
-        return jsonify(result="started", msg=msg)
-    else:
-        msg = video_camera.stop_record()
-        return jsonify(result="stopped", msg=msg)
-
-def video_stream():
-    global video_camera 
-    global global_frame
-
-    if video_camera == None:
-        from camera import VideoCamera
-        video_camera = VideoCamera()
-        
-    while True:
-        try:
-            frame = video_camera.get_frame()
-
-            if frame != None:
-                global_frame = frame
-                yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-            else:
-                yield (b'--frame\r\n'
-                                b'Content-Type: image/jpeg\r\n\r\n' + global_frame + b'\r\n\r\n')
-        except:
-            pass
-
-@app.route('/video_viewer')
-def video_viewer():
-    return Response(stream_with_context(video_stream()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
 @app.route('/open_recorder')
 def open_recorder():
     return render_template('recorder.html')
@@ -147,4 +91,4 @@ def download_file_2(subdir,filename):
                                filename, cache_timeout=0)
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug = True)
+    app.run(host='0.0.0.0', port=5001, debug = True)
