@@ -1,6 +1,3 @@
 google-api-python-client
 flask
 werkzeug
-numpy
-opencv-python
-pyaudio

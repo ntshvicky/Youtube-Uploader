@@ -54,15 +54,14 @@ def upload_file():
 
             youtube = get_authenticated_service(filename)
             try:
-                initialize_upload(youtube, filepath, title, description, category, keywords, privacyStatus)
+                rs = initialize_upload(youtube, filepath, title, description, category, keywords, privacyStatus)
+                resp = jsonify({'message' : rs})
+                resp.status_code = 200
+                return resp
             except Exception as e:
                 resp = jsonify({'message' : "An HTTP error occurred:\n%s" % str(e)})
                 resp.status_code = 400
                 return resp
-
-            resp = jsonify({'message' : "File successfully uploaded"})
-            resp.status_code = 200
-            return resp
         else:
             resp = jsonify({'message' : "only mp4, flv file allowed"})
             resp.status_code = 400

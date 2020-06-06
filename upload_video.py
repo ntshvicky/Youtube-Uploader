@@ -118,7 +118,7 @@ def initialize_upload(youtube, file, title, description, category, keywords, pri
         media_body=MediaFileUpload(file, chunksize=-1, resumable=True)
     )
 
-    resumable_upload(insert_request)
+    return resumable_upload(insert_request)
 
 # This method implements an exponential backoff strategy to resume a
 # failed upload.
@@ -132,9 +132,9 @@ def resumable_upload(insert_request):
             status, response = insert_request.next_chunk()
             if response is not None:
                 if 'id' in response:
-                    print("Video id '%s' was successfully uploaded." % response['id'])
+                    return "Your youtube URL is https://www.youtube.com/watch?v=%s" % response['id']
                 else:
-                    exit("The upload failed with an unexpected response: %s" % response)
+                    return "The upload failed with an unexpected response: %s" % response
         except HttpError as e:
             if e.resp.status in RETRIABLE_STATUS_CODES:
                 error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status,e.content)
@@ -144,7 +144,6 @@ def resumable_upload(insert_request):
             error = "A retriable error occurred: %s" % e
 
         if error is not None:
-            print(error)
             retry += 1
             if retry > MAX_RETRIES:
                 exit("No longer attempting to retry.")
@@ -153,3 +152,4 @@ def resumable_upload(insert_request):
             sleep_seconds = random.random() * max_sleep
             print("Sleeping %f seconds and then retrying..." % sleep_seconds)
             time.sleep(sleep_seconds)
+    return "Error on video uploading"

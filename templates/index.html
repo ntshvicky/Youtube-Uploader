@@ -192,14 +192,15 @@
     		    cache: false, 
 				success: function(data) {
                     $('.container').loader('hide');
-					alert("File Successfully Uploaded...");
-					//alert(data)
+                    alert("File Successfully Uploaded...");
+                    console.log(data);
 					$('#title').val("");
 					$('#description').val("");
 					$('#category').val("");
 					$('#keywords').val("");
                     $('#privacyStatus').val("")
 					$('#file').val("");
+                    showresponsemessage(data.message, "Upload Success", "#2b7025") 
 				},
 				error: function(data, status, er) {
                     $('.container').loader('hide');
@@ -220,6 +221,12 @@
         $('.container').loader('hide');
     });
 
+    function showresponsemessage(responsemessage, responsetitle, responsecolor) {
+        $("#divresponse").show("fast");
+        $('.modal-header').css('background-color', responsecolor);
+        $("#divresponse_title").html(responsetitle);
+        $("#divresponse_msg").html(responsemessage);
+    }
     function loadpopuppage(url, title) {
         $("#divresponse").show("fast");
         $("#divresponse_msg").html("");
