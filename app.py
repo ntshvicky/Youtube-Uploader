@@ -1,6 +1,5 @@
 import os
 import datetime
-#import magic
 import urllib.request
 from flask import Flask, flash, request, redirect, render_template, Response, jsonify, send_from_directory, stream_with_context
 from werkzeug.utils import secure_filename
