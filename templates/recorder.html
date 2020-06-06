@@ -1,0 +1,27 @@
+<div class="container row" id="container-recorder" style="margin: 0;">
+    <div id="testing">
+        <font size="5" color="red">
+            Please wait to load camera ......
+        </font>
+    </div>
+    <img id="bg" src="{{ url_for('video_viewer') }}" onLoad="imageloaded();">
+    <hr/>
+    <span id="days"></span> <span id="hours"></span> <span id="mins"></span> <span id="secs"></span>
+    <script type="text/javascript" src="{{ url_for('static', filename='recorder.js') }}?v=1.0.0.7"></script>
+
+<hr/>
+
+<input type="button" id="start_rec" name="start_rec" value="Start Recording" class="btn btn-info"/>
+
+<input type="button" id="stop_rec" name="stop_rec" value="Stop Recording" class="btn btn-danger"/>
+
+<a id="download" target="_blank"></a>
+</div>
+<script>    
+    $('#container-recorder').loader('show','<i class="fa fa-2x fa-spinner fa-pulse"></i>');
+    function imageloaded()
+    {
+        $('#container-recorder').loader('hide');
+        $('#testing').hide()
+    }
+</script>

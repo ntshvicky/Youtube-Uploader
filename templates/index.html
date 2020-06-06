@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Upload Video in Youtube</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <script src="{{ url_for('static', filename='center-loader.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1.0.0.1">
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Youtube Uploader</h1>
+  <p>Upload recorded or existing video in Youtube</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#upload">Upload Video</a></li>
+            <li><a data-toggle="tab" href="#record">Record Video</a></li>
+        </ul>
+        
+        <div class="tab-content">
+            <div id="upload" class="tab-pane fade in active" style="padding: 20px;">
+                <div class='inner_border'>
+                    <h3 style="text-align: center;">Upload Video in Youtube</h3>
+                    <div class="container-x">
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="fname">File Upload</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="file" id="file" name='file' placeholder="Upload" accept=".mp4,.flv"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="title">Title</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="text" id="title" name='title' placeholder="Title">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="description">Description</label>
+                            </div>
+                            <div class="col-75">
+                                <textarea id="description" name="description" placeholder="Write short description.." style="height:80px"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="category">Category</label>
+                            </div>
+                            <div class="col-75">
+                                <select id="category" name="category">
+                                    <option value="22" selected>People & Blogs</option>
+                                    <option value="1">Film & Animation</option>
+                                    <option value="2">Autos & Vehicles</option>
+                                    <option value="10">Music</option>
+                                    <option value="15">Pets & Animals</option>
+                                    <option value="17">Sports</option>
+                                    <option value="18">Short Movies</option>
+                                    <option value="19">Travel & Events</option>
+                                    <option value="20">Gaming</option>
+                                    <option value="21">Videoblogging</option>
+                                    <option value="23">Comedy</option>
+                                    <option value="24">Entertainment</option>
+                                    <option value="25">News & Politics</option>
+                                    <option value="26">Howto & Style</option>
+                                    <option value="27">Education</option>
+                                    <option value="28">Science & Technology</option>
+                                    <option value="29">Nonprofits & Activism</option>
+                                    <option value="30">Movies</option>
+                                    <option value="31">Anime/Animation</option>
+                                    <option value="32">Action/Adventure</option>
+                                    <option value="33">Classics</option>
+                                    <option value="35">Documentary</option>
+                                    <option value="36">Drama</option>
+                                    <option value="37">Family</option>
+                                    <option value="38">Foreign</option>
+                                    <option value="39">Horror</option>
+                                    <option value="40">Sci-Fi/Fantasy</option>
+                                    <option value="41">Thriller</option>
+                                    <option value="42">Shorts</option>
+                                    <option value="43">Shows</option>
+                                    <option value="44">Trailers</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                            <label for="keywords">Keywords</label>
+                            </div>
+                            <div class="col-75">
+                            <input type="text" name="keywords" name="keywords" placeholder="Keywords">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="privacyStatus">Video Privacy Status</label>
+                            </div>
+                            <div class="col-75">
+                                <select id="privacyStatus" name="privacyStatus">
+                                    <option value="private">Private</option>
+                                    <option value="public">Public</option>
+                                    <option value="unlisted">Unlisted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr style="border-color: black;"/>
+                        <div class="row" style="text-align: center;">
+                            <input type="submit" id="upload_video" value="Upload">
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+            <div id="record" class="tab-pane fade" style="padding: 20px;">
+                <div class='inner_border'>
+                    <h3 style="text-align: center;">Record and Upload Video in Youtube</h3>
+                    <div class="container-x row" style="text-align: center;">
+                        <input type="submit" id="open_recorder" name="open_recorder" value="Record Video"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="divresponse" class="modal fade in" style="display:none;z-index:1000004;overflow:scroll" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-bottom-left-radius: 10px; border-radius: 5px; box-shadow: 5px;">
+            <div class="modal-header" style="background-color:  #b30000;">
+                <button type="button" id="btnclose_response" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="divresponse_title" style="color: #ffffff;">Video Recorder</h4>
+            </div>
+            <div class="modal-footer" style="text-align :left;">
+                <span id="divresponse_msg" style="font-weight:bold;"></span>  
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+	$('#upload_video').click(function() {
+		var title = $('#title').val();
+		var description = $('#description').val();
+		var category = $('#category').val();
+		var keywords = $('#keywords').val();
+		var privacyStatus = $('#privacyStatus').val();
+		var file = $('#file').val();
+		
+		if(title == "") {
+			alert("Please enter title");
+			return false;
+		}
+		else if(description == "") {
+			alert("Please enter description");
+			return false;
+		}
+		else if(category == "") {
+			alert("Please select category");
+			return false;
+		}
+		else if(keywords == "") {
+			alert("Please enter keywords");
+			return false;
+		}
+		else if(privacyStatus == "") {
+			alert("Please select privacyStatus");
+			return false;
+		}
+		else if(file == "") {
+			alert("Please add video file. (in mp4/flv format)");
+			return false;
+		}
+		else
+		{
+            $('.container').loader('show','<i class="fa fa-2x fa-spinner fa-pulse"></i>');
+			var formData = new FormData();
+			formData.append("title",title);
+			formData.append("description",description);
+			formData.append("category",category);
+			formData.append("keywords",keywords);
+			formData.append("privacyStatus",privacyStatus);
+			formData.append("action", "upload");
+			formData.append("file",$("#file")[0].files[0]);
+			event.preventDefault();
+			$.ajax({
+				type: "POST",
+				url: "/upload_file",
+		        data: formData,
+		        contentType: false,
+    		    processData: false,
+    		    cache: false, 
+				success: function(data) {
+                    $('.container').loader('hide');
+					alert("File Successfully Uploaded...");
+					//alert(data)
+					$('#title').val("");
+					$('#description').val("");
+					$('#category').val("");
+					$('#keywords').val("");
+                    $('#privacyStatus').val("")
+					$('#file').val("");
+				},
+				error: function(data, status, er) {
+                    $('.container').loader('hide');
+					alert("Error"+data);
+				}
+	            
+			});
+		}
+		
+	});
+
+
+    $('#open_recorder').click(function() {
+        $('.container').loader('show','<i class="fa fa-2x fa-spinner fa-pulse"></i>');
+        url = '/open_recorder';
+        title = 'Video Recorder'
+        loadpopuppage(url, title)
+        $('.container').loader('hide');
+    });
+
+    function loadpopuppage(url, title) {
+        $("#divresponse").show("fast");
+        $("#divresponse_msg").html("");
+        $("#divresponse_title").html(title);
+        $("#divresponse_msg").load(url);
+    }
+
+    $("#btnclose_response").click(function() {
+        location.reload();
+    });
+</script>
